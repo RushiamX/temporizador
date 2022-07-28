@@ -5,23 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temporizador</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./script.js"></script>
 </head>
 <body>
     <header></header>
 
     <main>
-        <h1>Temporisador</h1>
-        <div class="Temp__div">
-            <input class="time" type="text">
-        </div>
-        <div class="icon__group">
-            <img class="icon__play" src="" alt="icone play">
-            <img class="icon__pause" src="" alt="icone play">
-            <img class="icon__stop" src="" alt="icone play">
-        </div>
+        <div class="container">
+            <h1 class="title">Temporisador</h1>
+            <div class="Temp__div">
+                <input type="time" min="00:00" max="60:00" name="time" class="time" type="text" value="00:00">
+            </div>
+            <div class="icon__group">
+                <img class="icon__play" src="./assets/botao-play-ponta-de-seta.png" alt="icone play">
+                <img class="icon__pause" src="./assets/pausa.png" alt="icone pause">
+                <img class="icon__stop" src="./assets/stop.png" alt="icone stop">
+            </div>
+    
+            <div class="progress__group">
+                <div class="progress__bar-fundo"></div>
+                <div class="progress__bar"></div>
+            </div>
 
-        <div class="progress__group">
-            <div class="progress__bar"></div>
         </div>
     </main>
 
