@@ -75,4 +75,5 @@
     height: 30px;   
     background: #0500FF;
     position: absolute;
+    transition: width 0.5s;
 }
