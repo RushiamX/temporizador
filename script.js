@@ -5,9 +5,6 @@ const stop = document.querySelector('.icon__stop');
 const progressBar = document.querySelector('.progress__bar');
 
 let minhaHora = new Date();
-let horaDez = '';
-let minutoDez = '';
-let segundoDez = '';
 
 let bitTrava = false;
 
@@ -33,6 +30,10 @@ const reduceSecond = () => {
 
 const showTime = () =>{
 
+    let horaDez = '';
+    let minutoDez = '';
+    let segundoDez = '';
+
     if(minhaHora.getHours() < 10){
         horaDez = "0";
     }else{
@@ -56,24 +57,26 @@ const showTime = () =>{
 
 }
 
+
 play.addEventListener('click', ()=>{
 if(!bitTrava){
     if(time.value != "00:00:00"){
 
-      //  minhaHora.setHours(time.getHours(),time.getMinutes(), time.getSeconds());
+        var horaColetada = time.value;
+  
+        let h = parseInt(horaColetada.substr(0,2));
+        let m = parseInt(horaColetada.substr(3,2));
+        let s = parseInt(horaColetada.substr(6,2));
+            
+        minhaHora.setHours(h,m,s,0);
 
-      let horaColetada = new Date(time.value);
+        setIntervalId = setInterval(() => {
+            reduceSecond();
+            showTime();
+        }, 100);
 
-      console.log(Date.parse(time.value));
-      console.log(time.getMinutes());
-      console.log(time.getSeconds());
-
-        // setIntervalId = setInterval(() => {
-        //     reduceSecond();
-        //     showTime();
-        // }, 100);
-
-        // bitTrava =true;
+        bitTrava =true;
+        time.disabled = true;
 
     }else{
         alert("Insira um tempo antes de iniciar o temporizador!")
@@ -83,12 +86,15 @@ if(!bitTrava){
       
 })
 
+
 stop.addEventListener('click', ()=>{
     minhaHora.setHours(0, 0, 0, 0)
     clearInterval(setIntervalId);
     showTime();
     bitTrava = false;
+    time.disabled = false;
 })
+
 
 pause.addEventListener('click', ()=>{
     clearInterval(setIntervalId);
