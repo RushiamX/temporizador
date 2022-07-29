@@ -9,6 +9,9 @@ let horaDez = '';
 let minutoDez = '';
 let segundoDez = '';
 
+let bitTrava = false;
+
+
 
 minhaHora.setHours(00,00,00,00);
 
@@ -54,10 +57,29 @@ const showTime = () =>{
 }
 
 play.addEventListener('click', ()=>{
-    setIntervalId = setInterval(() => {
-        reduceSecond();
-        showTime();
-    }, 100);
+if(!bitTrava){
+    if(time.value != "00:00:00"){
+
+      //  minhaHora.setHours(time.getHours(),time.getMinutes(), time.getSeconds());
+
+      let horaColetada = new Date(time.value);
+
+      console.log(Date.parse(time.value));
+      console.log(time.getMinutes());
+      console.log(time.getSeconds());
+
+        // setIntervalId = setInterval(() => {
+        //     reduceSecond();
+        //     showTime();
+        // }, 100);
+
+        // bitTrava =true;
+
+    }else{
+        alert("Insira um tempo antes de iniciar o temporizador!")
+    }
+
+}
       
 })
 
@@ -65,9 +87,11 @@ stop.addEventListener('click', ()=>{
     minhaHora.setHours(0, 0, 0, 0)
     clearInterval(setIntervalId);
     showTime();
+    bitTrava = false;
 })
 
 pause.addEventListener('click', ()=>{
     clearInterval(setIntervalId);
+    bitTrava = false;
 })
 
