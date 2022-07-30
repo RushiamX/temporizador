@@ -78,6 +78,9 @@ const pauseClock = () =>{
 
         audio.pause();
         audio.currentTime = 0;;
+
+        stop.classList.remove('freeking');
+        pause.classList.remove('freeking');
 }
 
 //chamada quando o tempo acaba
@@ -96,6 +99,9 @@ const timeOut = () =>{
     audio.play();
     audio.loop = true;
 
+    stop.classList.add('freeking');
+    pause.classList.add('freeking');
+
 }
 
 
@@ -108,11 +114,11 @@ if(!bitTrava){
     let h = parseInt(horaColetada.substr(0,2));
     let m = parseInt(horaColetada.substr(3,2));
     let s = parseInt(horaColetada.substr(6,2));
-    secondsTotal = s + (m * 60) + (h * 60 * 60);
+    secondsAtual = s + (m * 60) + (h * 60 * 60);
 
     //se a hora for válida prossegue
 
-        if(!isNaN(h) && !isNaN(m) && !isNaN(s) && secondsTotal >0){
+        if(!isNaN(h) && !isNaN(m) && !isNaN(s) && secondsAtual >0){
 
             //após validado seta a hora
             minhaHora.setHours(h,m,s,0);
@@ -124,6 +130,8 @@ if(!bitTrava){
                 startProgress = true;
                 progressBarWidth = 0;
                 progressBar.setAttribute("style","width:"+ 0 +"%")
+                audio.pause();
+                audio.currentTime = 0;;
             }
     
             //seta o intervalo e chama funções periodicamente
@@ -167,6 +175,9 @@ stop.addEventListener('click', ()=>{
 
     audio.pause();
     audio.currentTime = 0;
+
+    stop.classList.remove('freeking');
+    pause.classList.remove('freeking');
 })
 
 //botao pause
