@@ -14,15 +14,6 @@ let secondsTotal = 0;
 let secondsAtual = 0;
 
 
-
-const addMinute = () => {
-    minhaHora.setMinutes(minhaHora.getMinutes() + 1)
-}
-
-const addSecond = () => {
-    minhaHora.setSeconds(minhaHora.getSeconds() + 1)
-}
-
 const reduceSecond = () => {
     minhaHora.setSeconds(minhaHora.getSeconds() - 1)
 }
@@ -52,6 +43,7 @@ const showTime = () =>{
         segundoDez = "";
     }
 
+    //mostra a hora atual
     time.value = (horaDez + minhaHora.getHours() + ":"+ minutoDez + minhaHora.getMinutes()
      + ":" + segundoDez + minhaHora.getSeconds());
 
@@ -101,46 +93,50 @@ const timeOut = () =>{
 
 play.addEventListener('click', ()=>{
 if(!bitTrava){
-    if(time.value != "00:00:00"){
 
-        
-        //coleta a hora digitada e transforma em 
-        //objeto tipo hora
-        let horaColetada = time.value;
-        let h = parseInt(horaColetada.substr(0,2));
-        let m = parseInt(horaColetada.substr(3,2));
-        let s = parseInt(horaColetada.substr(6,2));
-        minhaHora.setHours(h,m,s,0);
+    //coleta a hora digitada e transforma em 
+    //objeto tipo hora
+    let horaColetada = time.value;
+    let h = parseInt(horaColetada.substr(0,2));
+    let m = parseInt(horaColetada.substr(3,2));
+    let s = parseInt(horaColetada.substr(6,2));
 
-       
-        
-        //configura o tempo total inicial para calcular
-        //os steps da progress bar
-        if(!startProgress){
-            secondsTotal = s + (m * 60) + (h * 60 * 60);
-            startProgress = true;
-            progressBarWidth = 0;
-            progressBar.setAttribute("style","width:"+ 0 +"%")
-        }
+    //se a hora for válida prossegue
 
-        //seta o intervalo e chama funções periodicamente
-        setIntervalId = setInterval(() => {
-            if(time.value != "00:00:00"){
-                reduceSecond();
-                showTime();
-                avancaProgressBar();
-            }else{
-                timeOut();
+        if(!isNaN(h) && !isNaN(m) && !isNaN(s)){
+
+            //após validado seta a hora
+            minhaHora.setHours(h,m,s,0);
+
+            //configura o tempo total inicial para calcular
+            //os steps da progress bar
+            if(!startProgress){
+                secondsTotal = s + (m * 60) + (h * 60 * 60);
+                startProgress = true;
+                progressBarWidth = 0;
+                progressBar.setAttribute("style","width:"+ 0 +"%")
             }
-        }, 1000);
-
-        //inpede de iniciar um novo interval
-        bitTrava =true;
-        time.disabled = true;
-
-    }else{
-        alert("Insira um tempo antes de iniciar o temporizador!")
-    }
+    
+            //seta o intervalo e chama funções periodicamente
+            setIntervalId = setInterval(() => {
+                if(time.value != "00:00:00"){
+                    reduceSecond();
+                    showTime();
+                    avancaProgressBar();
+                }else{
+                    timeOut();
+                }
+            }, 1000);
+    
+            //inpede de iniciar um novo interval
+            bitTrava =true;
+            time.disabled = true;
+    
+        }else{
+            alert("Insira um tempo antes de iniciar o temporizador!")
+            time.value = "00:00:00"
+        }
+    
 }
 
 })
