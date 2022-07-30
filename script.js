@@ -9,6 +9,9 @@ minhaHora.setHours(00,00,00,00);
 let progressBarWidth = 0;
 
 let bitTrava = false;
+let startProgress = false;
+let secondsTotal = 0;
+let secondsAtual = 0;
 
 
 
@@ -54,25 +57,84 @@ const showTime = () =>{
 
 }
 
+const avancaProgressBar = () =>{
+    if(time.value != "00:00:00"){
+
+        let horaColetada = time.value;
+        let h = parseInt(horaColetada.substr(0,2));
+        let m = parseInt(horaColetada.substr(3,2));
+        let s = parseInt(horaColetada.substr(6,2));
+        secondsAtual = s + (m * 60) + (h * 60 * 60);
+
+        progressBarWidth = parseInt(((-100 / secondsTotal) * secondsAtual)+100)
+        progressBar.setAttribute("style","width:"+ progressBarWidth +"%");
+
+    }else{
+        progressBarWidth = 100;
+        progressBar.setAttribute("style","width:"+ progressBarWidth +"%");
+    }
+}
+
+//pausa o relógio
+const pauseClock = () =>{
+    clearInterval(setIntervalId);
+    bitTrava = false;
+}
+
+//chamada quando o tempo acaba
+const timeOut = () =>{
+    minhaHora.setHours(0, 0, 0, 0)
+    clearInterval(setIntervalId);
+    showTime();
+    bitTrava = false;
+    time.disabled = false;
+    startProgress = false;
+
+    progressBarWidth = 0;
+    //progressBar.setAttribute("style","width:"+ 0 +"%")
+
+    secondsTotal = 0;
+    secondsAtual = 0;    
+
+}
+
 
 play.addEventListener('click', ()=>{
 if(!bitTrava){
     if(time.value != "00:00:00"){
 
-        var horaColetada = time.value;
-  
+        
+        //coleta a hora digitada e transforma em 
+        //objeto tipo hora
+        let horaColetada = time.value;
         let h = parseInt(horaColetada.substr(0,2));
         let m = parseInt(horaColetada.substr(3,2));
         let s = parseInt(horaColetada.substr(6,2));
-            
         minhaHora.setHours(h,m,s,0);
 
-        setIntervalId = setInterval(() => {
-            reduceSecond();
-            showTime();
-            incrementaProgressBar1();
-        }, 100);
+       
+        
+        //configura o tempo total inicial para calcular
+        //os steps da progress bar
+        if(!startProgress){
+            secondsTotal = s + (m * 60) + (h * 60 * 60);
+            startProgress = true;
+            progressBarWidth = 0;
+            progressBar.setAttribute("style","width:"+ 0 +"%")
+        }
 
+        //seta o intervalo e chama funções periodicamente
+        setIntervalId = setInterval(() => {
+            if(time.value != "00:00:00"){
+                reduceSecond();
+                showTime();
+                avancaProgressBar();
+            }else{
+                timeOut();
+            }
+        }, 1000);
+
+        //inpede de iniciar um novo interval
         bitTrava =true;
         time.disabled = true;
 
@@ -83,43 +145,24 @@ if(!bitTrava){
 
 })
 
-
+//botao stop
 stop.addEventListener('click', ()=>{
     minhaHora.setHours(0, 0, 0, 0)
     clearInterval(setIntervalId);
     showTime();
     bitTrava = false;
+    startProgress = false;
     time.disabled = false;
+
+    progressBarWidth = 0;
+    progressBar.setAttribute("style","width:"+ 0 +"%")
+
+    secondsTotal = 0;
+    secondsAtual = 0;    
+
 })
 
-
+//botao pause
 pause.addEventListener('click', ()=>{
-    clearInterval(setIntervalId);
-    bitTrava = false;
+    pauseClock();
 })
-
-
-
-function incrementaProgressBar1() {
-   
-   if(progressBarWidth < 100) {
-    progressBarWidth ++;
-    console.log(progressBarWidth);
-   }
-   progressBar.setAttribute("style","width:"+ progressBarWidth +"%");
-}
-
-function incrementaProgressBar10() {
-    if(progressBarWidth < 100) progressBarWidth += 10 ;
-    progressBar.setAttribute("style","width:"+ progressBarWidth +"%");
- }
-
- function incrementaProgressBar25() {
-    if(progressBarWidth < 100) progressBarWidth += 25 ;
-    progressBar.setAttribute("style","width:"+ progressBarWidth +"%");
- }
-
- function incrementaProgressBar50() {
-    if(progressBarWidth < 100) progressBarWidth += 50 ;
-    progressBar.setAttribute("style","width:"+ progressBarWidth +"%");
- }
