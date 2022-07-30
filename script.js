@@ -13,6 +13,10 @@ let startProgress = false;
 let secondsTotal = 0;
 let secondsAtual = 0;
 
+const audio = new Audio('dingle.mp3');
+
+//audio.play();
+
 
 const reduceSecond = () => {
     minhaHora.setSeconds(minhaHora.getSeconds() - 1)
@@ -69,8 +73,11 @@ const avancaProgressBar = () =>{
 
 //pausa o relógio
 const pauseClock = () =>{
-    clearInterval(setIntervalId);
-    bitTrava = false;
+        clearInterval(setIntervalId);
+        bitTrava = false;
+
+        audio.pause();
+        audio.currentTime = 0;;
 }
 
 //chamada quando o tempo acaba
@@ -83,10 +90,11 @@ const timeOut = () =>{
     startProgress = false;
 
     progressBarWidth = 0;
-    //progressBar.setAttribute("style","width:"+ 0 +"%")
-
     secondsTotal = 0;
     secondsAtual = 0;    
+
+    audio.play();
+    audio.loop = true;
 
 }
 
@@ -100,10 +108,11 @@ if(!bitTrava){
     let h = parseInt(horaColetada.substr(0,2));
     let m = parseInt(horaColetada.substr(3,2));
     let s = parseInt(horaColetada.substr(6,2));
+    secondsTotal = s + (m * 60) + (h * 60 * 60);
 
     //se a hora for válida prossegue
 
-        if(!isNaN(h) && !isNaN(m) && !isNaN(s)){
+        if(!isNaN(h) && !isNaN(m) && !isNaN(s) && secondsTotal >0){
 
             //após validado seta a hora
             minhaHora.setHours(h,m,s,0);
@@ -156,6 +165,8 @@ stop.addEventListener('click', ()=>{
     secondsTotal = 0;
     secondsAtual = 0;    
 
+    audio.pause();
+    audio.currentTime = 0;
 })
 
 //botao pause
